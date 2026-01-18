@@ -6,7 +6,7 @@ import {
 
 const router = express.Router();
 
-router.post("/create-incident", createIncident);
-router.get("/get-incidents", getIncidents);
+router.post("/", createIncident);
+router.get("/", getIncidents);
 
 export default router;

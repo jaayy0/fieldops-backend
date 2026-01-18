@@ -1,10 +1,8 @@
 import admin from "firebase-admin";
-import serviceAccount from "../../serviceAccountKey.json" with { type: "json" };
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-});
+admin.initializeApp(); // ADC (Cloud Run / local con env var)
 
 const db = admin.firestore();
+const serverTimestamp = admin.firestore.FieldValue.serverTimestamp;
 
-export { db };
+export { db, serverTimestamp };

@@ -1,12 +1,23 @@
-import { db } from "../config/firebase.js";
+import { db, serverTimestamp } from "../config/firebase.js";
 
 const COLLECTION = "incidents";
 
-const saveIncident = async (incident) => {
-    const ref = await db.collection(COLLECTION).add({
-        ...incident,
-        created_at: new Date(),
-    });
+const saveIncident = async ({ title, description, urgency }) => {
+    const incident = {
+        title,
+        description,
+        urgency,
+        created_at: serverTimestamp(),
+    };
+
+
+    if (urgency === "Alta") {
+        incident.requires_supervisor = true;
+        incident.server_timestamp = serverTimestamp();
+
+    }
+
+    const ref = await db.collection(COLLECTION).add(incident);
 
     return {
         id: ref.id,
@@ -26,7 +37,4 @@ const fetchIncidents = async () => {
     }));
 };
 
-export {
-    saveIncident,
-    fetchIncidents,
-};
+export { saveIncident, fetchIncidents };
