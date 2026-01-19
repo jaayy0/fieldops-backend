@@ -2,16 +2,17 @@ import { db, serverTimestamp } from "../config/firebase.js";
 
 const COLLECTION = "incidents";
 
-const saveIncident = async ({ title, description, urgency }) => {
+const saveIncident = async ({ title, description, urgency, ai_summary }) => {
     const incident = {
         title,
         description,
         urgency,
+        ai_summary,
         created_at: serverTimestamp(),
     };
 
 
-    if (urgency === "Alta") {
+    if (urgency.toLowerCase() === "alta") {
         incident.requires_supervisor = true;
         incident.server_timestamp = serverTimestamp();
 

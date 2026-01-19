@@ -1,20 +1,24 @@
 import { saveIncident, fetchIncidents } from "../services/firestore.service.js";
+import { analyzeIncidentWithAI } from "../services/ai.service.js";
 
 export const createIncident = async (req, res) => {
     try {
         const { title, description, urgency } = req.body;
 
-        // Validación mínima (suficiente para la prueba)
+
         if (!title || !description || !urgency) {
             return res.status(400).json({
                 message: "title, description and urgency are required",
             });
         }
 
+        const ai_summary = await analyzeIncidentWithAI(description);
+
         const incident = await saveIncident({
             title,
             description,
             urgency,
+            ai_summary,
         });
 
         res.status(201).json(incident);
